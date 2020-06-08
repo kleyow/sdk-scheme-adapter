@@ -12,7 +12,7 @@
 
 
 const util = require('util');
-const { AccountsModel, OutboundTransfersModel, OutboundRequestToPayTransferModel, OutboundRequestToPayModel } = require('@internal/model');
+const { AccountsModel, OutboundTransfersModel, OutboundRequestToPayTransferModel, OutboundRequestToPayModel, OutboundGetPartiesModel } = require('@internal/model');
 
 
 /**
@@ -68,6 +68,9 @@ const handleRequestToPayError = (method, err, ctx) =>
 
 const handleRequestToPayTransferError = (method, err, ctx) =>
     handleError(method, err, ctx, 'requestToPayTransferState');
+
+const handlePartiesError = (method, err, ctx) =>
+    handleError(method, err, ctx, 'partiesState');
 
 
 /**
@@ -289,6 +292,36 @@ const postRequestToPay = async (ctx) => {
     }
 };
 
+const getParties = async (ctx) => {
+  try {
+      let getPartyRequest = {
+          ...ctx.request.body,
+          idType: ctx.state.path.params.idType,
+          idValue: ctx.state.path.params.idValue,
+          currentState: 'start',
+      };
+
+      // use the transfers model to execute asynchronous stages with the switch
+      const model = new OutboundGetPartiesModel({
+          ...ctx.state.conf,
+          cache: ctx.state.cache,
+          logger: ctx.state.logger,
+          wso2Auth: ctx.state.wso2Auth,
+      });
+
+      // initialize the transfer model and start it running
+      await model.initialize(getPartyRequest);
+      const response = await model.run();
+
+      // return the result
+      ctx.response.status = 200;
+      ctx.response.body = response;
+  }
+  catch(err) {
+      return handlePartiesError('getParties', err, ctx);
+  }
+};
+
 const healthCheck = async (ctx) => {
     ctx.response.status = 200;
     ctx.response.body = '';
@@ -317,4 +350,7 @@ module.exports = {
     '/requestToPayTransfer/{requestToPayTransactionId}': {
         put: putRequestToPayTransfer
     },
+    '/parties/{idType}/{idValue}': {
+        get: getParties
+    }
 };
