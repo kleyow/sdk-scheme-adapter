@@ -67,7 +67,7 @@ class OutboundGetPartiesModel {
         this.stateMachine = new StateMachine({
             init: initState,
             transitions: [
-                { name: 'resolveParty', from: 'start', to: 'suceeded' },
+                { name: 'resolveParty', from: 'start', to: 'partyResolved' },
                 { name: 'error', from: '*', to: 'errored' },
             ],
             methods: {
