@@ -35,7 +35,7 @@ class OutboundGetPartiesModel {
         this._requests = new MojaloopRequests({
             logger: this._logger,
             peerEndpoint: config.peerEndpoint,
-            alsEndpoint: "172.17.0.1:4002",
+            alsEndpoint: config.alsEndpoint,
             dfspId: config.dfspId,
             tls: config.tls,
             jwsSign: config.jwsSign,

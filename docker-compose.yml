@@ -8,8 +8,8 @@ services:
       context: .
     env_file: ./src/test/config/integration.env
     ports:
-      - "14000:4000"
-      - "14001:4001"
-      - "14002:4002"
+      - "4000:4000"
+      - "4001:4001"
+      - "4002:4002"
     depends_on:
       - redis
