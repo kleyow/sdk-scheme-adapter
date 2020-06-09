@@ -67,7 +67,7 @@ class OutboundGetPartiesModel {
         this.stateMachine = new StateMachine({
             init: initState,
             transitions: [
-                { name: 'resolveParty', from: 'start', to: 'partyResolved' },
+                { name: 'resolveParty', from: 'start', to: 'suceeded' },
                 { name: 'error', from: '*', to: 'errored' },
             ],
             methods: {
@@ -251,13 +251,8 @@ class OutboundGetPartiesModel {
                     // next transition is to resolveParty
                     await this.stateMachine.resolveParty();
                     this._logger.log(`Party resolved for transfer ${this.data.transferId}`);
-                    if(this.stateMachine.state === 'partyResolved' && !this._autoAcceptParty) {
-                        //we break execution here and return the resolved party details to allow asynchronous accept or reject
-                        //of the resolved party
-                        await this._save();
-                        return this.getResponse();
-                    }
-                    break;
+                    await this._save();
+                    return this.getResponse();
 
                 case 'succeeded':
                     // all steps complete so return
