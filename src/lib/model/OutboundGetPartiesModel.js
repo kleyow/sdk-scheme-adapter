@@ -324,7 +324,7 @@ class OutboundGetPartiesModel {
         try {
             this.data.currentState = this.stateMachine.state;
             //const res = await this._cache.set(`txnReqModel_${this.data.transactionRequestId}`, this.data);
-            this._logger.push({ res }).log('Persisted transaction request model in cache');
+            //this._logger.push({ res }).log('Persisted transaction request model in cache');
         }
         catch(err) {
             this._logger.push({ err }).log('Error saving transfer model');
