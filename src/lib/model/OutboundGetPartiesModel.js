@@ -152,7 +152,7 @@ class OutboundGetPartiesModel {
                         return reject(new Error(`Resolved party has no party object: ${util.inspect(partyResp)}`));
                     }
 
-                    party = partyResp.party;
+                    let party = partyResp.party;
 
                     // cancel the timeout handler
                     clearTimeout(timeout);
