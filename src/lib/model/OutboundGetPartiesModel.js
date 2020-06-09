@@ -200,6 +200,10 @@ class OutboundGetPartiesModel {
                         this.data.dateOfBirth = party.personalInfo.dateOfBirth;
                     }
 
+                    if(party.accounts){
+                        this.data.accounts = party.accounts.account;
+                    }
+
                     return resolve(party);
                 }
                 catch(err) {
