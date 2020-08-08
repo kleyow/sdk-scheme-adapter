@@ -937,7 +937,7 @@ const putThirdPartyReqTransactionsById = async (ctx) => {
         const res = await ctx.state.cache.set(`callback_${ctx.state.path.params.ID}`, req);
         ctx.state.logger.log(`Caching callback: ${util.inspect(res)}`);
     }
-
+    console.log(ctx);
     // publish an event onto the cache for subscribers to action
     await ThirdpartyTrxnModelOut.publishNotifications(ctx.state.cache, ctx.state.path.params.ID, {
         type: 'thirdpartyTransactionsReqResponse',
